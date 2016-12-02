@@ -10,7 +10,7 @@
   [input]
   (map get-parts (split input #" ")))
 
-(defn turner
+(defn clean-instruction
   [headings instruction]
   (let [turning-matrix {["N" "R"] "E",
                         ["N" "L"] "W",
@@ -27,7 +27,7 @@
 
     (conj headings [new-heading num-steps])))
 
-(defn summer
+(defn travel
   [coords step]
   (let [step-matrix {"N" ["x" +],
                      "E" ["y" +],
@@ -35,10 +35,10 @@
                      "W" ["y" -]}
         [direction count] step
         [target operation] (step-matrix direction)
-        [x-value y-value] coords]
-    (if (= target "x")
-      [(operation x-value count) y-value]
-      [x-value (operation y-value count)])))
+        [x-value y-value] (last coords)]
+    (conj coords (if (= target "x")
+                   [(operation x-value count) y-value]
+                   [x-value (operation y-value count)]))))
 
 (defn abs-dist
   [coords]
@@ -49,5 +49,6 @@
 (defn solve
   [input]
 
-  (let [instructions (parse-instructions input)]
-    (abs-dist (reduce summer [0,0] (reduce turner [["N" 0]] instructions)))))
+  (let [instructions (parse-instructions input)
+        stops (reduce travel [[0,0]] (reduce clean-instruction [["N" 0]] instructions))]
+    [stops (abs-dist (last stops))]))
