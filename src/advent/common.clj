@@ -25,13 +25,10 @@
         input (read-input day-no)]
     (solver-fn input)))
 
-(defn format-item
-  [item]
-  (apply str "\n" item))
 
 (defn format-output
   "Formats output to be (somewhat) readable"
   [input]
-  (map format-item input))
+  input)
 
 
