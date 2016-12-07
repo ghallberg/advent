@@ -8,7 +8,9 @@
 (defn read-input
   "Reads input for given day"
   [day-no]
-  (trim (slurp (str "input-files/day-" day-no ".txt"))))
+  (try (trim (slurp (str "input-files/day-" day-no ".txt")))
+       (catch Exception e
+         (throw (Exception. (str "Error while reading input for day " day-no ": " (.getMessage e)))))))
 
 (defn find-solver
   "Fetches a solve function for the specified day"
