@@ -2,16 +2,14 @@
 
 (use '[clojure.string :only (split)])
 
-(defn get-parts
-  [instruction]
-    [(str(first instruction)) (read-string (subs instruction 1))])
+(defn get-parts [instruction]
+  [(str(first instruction)) (read-string (subs instruction 1))])
 
 (defn parse-instructions
   [input]
   (map get-parts (split input #" ")))
 
-(defn clean-instruction
-  [headings instruction]
+(defn clean-instruction [headings instruction]
   (let [turning-matrix {["N" "R"] "E",
                         ["N" "L"] "W",
                         ["E" "R"] "S",
@@ -27,28 +25,36 @@
 
     (conj headings [new-heading num-steps])))
 
-(defn travel
-  [coords step]
-  (let [step-matrix {"N" ["x" +],
-                     "E" ["y" +],
-                     "S" ["x" -],
-                     "W" ["y" -]}
-        [direction count] step
-        [target operation] (step-matrix direction)
-        [x-value y-value] (last coords)]
-    (conj coords (if (= target "x")
-                   [(operation x-value count) y-value]
-                   [x-value (operation y-value count)]))))
+(defn to-operation [[direction num-steps]]
+  (let [step-matrix {"N" [0 +],
+                     "E" [1 +],
+                     "S" [0 -],
+                     "W" [1 -]}
+        [axis operation] (step-matrix direction)]
+    [axis operation num-steps]))
 
-(defn abs-dist
-  [coords]
+(defn generate-positions[path [axis direction num-steps]]
+  (let [cur-pos (last path)
+        start (direction (nth cur-pos axis) 1)
+        end (direction start num-steps)
+        step-direction (direction 1)]
+    (into path (map (partial assoc cur-pos axis) (range start end step-direction)))))
 
+(defn first-repeat [stops]
+  (reduce (fn [seen cur]
+            (if-let [exists (get seen cur)]
+              (reduced exists)
+              (conj seen cur)))
+    #{} stops))
+
+(defn abs-dist [coords]
   (let [[x y] coords]
     (+ (Math/abs x) (Math/abs y))))
 
-(defn solve
-  [input]
-
+(defn solve [input]
   (let [instructions (parse-instructions input)
-        stops (reduce travel [[0,0]] (reduce clean-instruction [["N" 0]] instructions))]
-    [stops (abs-dist (last stops))]))
+        stops (reduce generate-positions [[0 0]] (map to-operation (reduce clean-instruction [["N" 0]] instructions)))]
+    [["Stops:" stops]
+     ["First duplicate:" (first-repeat stops)]
+     ["First duplicate dist:" (abs-dist (first-repeat stops))]
+     ["Distance from origin:" (abs-dist (last stops))]]))
