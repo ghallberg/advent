@@ -4,11 +4,17 @@
 
 (defn parse-sides
   [triangle-string]
-  (map read-string (split (trim triangle-string) #" ")))
+  (map read-string (split triangle-string #" +")))
+
+(defn convert
+  [input]
+  (partition 3 (reduce into (apply mapv vector input))))
 
 (defn parse-possibles
   [input]
-  (map parse-sides (split input #"\n")))
+  (let [possibles1 (map parse-sides (map trim (split input #"\n")))
+        possibles2 (convert possibles1)]
+    [possibles1 possibles2]))
 
 (defn triangle?
   [sides]
@@ -20,11 +26,9 @@
 (defn count-triangles
   [possibles]
   (let [actual-triangles(filter triangle? possibles)]
-    (println actual-triangles)
     (count actual-triangles)))
 
 (defn solve
   [input]
-  (let [possibles (parse-possibles input)]
-    (println possibles)
-    ["Count: " (count-triangles possibles)]))
+  (let [[possibles1 possibles2] (parse-possibles input)]
+    [["Count 1: " (count-triangles possibles1)]["Count 2: " (count-triangles possibles2)]]))
