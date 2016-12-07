@@ -7,4 +7,4 @@
   "I don't do a whole lot ... yet."
   [& args]
   (let [day-no (first args)]
-    (println (common/apply-solution day-no (common/read-input day-no)))))
+    (println (common/format-output (common/apply-solution day-no (common/read-input day-no))))))

@@ -13,3 +13,14 @@
   [day-no input]
   (when (= day-no "1")
     (day-1/solve input)))
+
+(defn format-item
+  [item]
+  (apply str "\n" item))
+
+(defn format-output
+  "Formats output to be (somewhat) readable"
+  [input]
+  (map format-item input))
+
+
