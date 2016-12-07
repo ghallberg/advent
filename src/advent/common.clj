@@ -2,6 +2,7 @@
 
 (require '[advent.day-1 :as day-1])
 (require '[advent.day-2 :as day-2])
+(require '[advent.day-3 :as day-3])
 
 (use '[clojure.string :only [trim]])
 
