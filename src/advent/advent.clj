@@ -1,4 +1,4 @@
-(ns advent.core
+(ns advent.advent
   (:gen-class))
 
 (require '[advent.common :as common])
@@ -8,4 +8,4 @@
   [& args]
   (let [day-no (first args)]
     (try (println (common/format-output (common/apply-solution day-no)))
-         (catch Exception e (println (.getMessage e))))))
+         (catch IllegalArgumentException e (println (.getMessage e))))))
