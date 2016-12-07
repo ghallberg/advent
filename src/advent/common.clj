@@ -1,6 +1,8 @@
 (ns advent.common)
 
 (require '[advent.day-1 :as day-1])
+(require '[advent.day-2 :as day-2])
+
 (use '[clojure.string :only [trim]])
 
 (defn read-input
@@ -8,11 +10,17 @@
   [day-no]
   (trim (slurp (str "input-files/day-" day-no ".txt"))))
 
+(defn find-solver
+  "Fetches a solve function for the specified day"
+  [day-no]
+  (resolve (symbol (str "advent.day-" day-no "/solve"))))
+
 (defn apply-solution
-  "Applies solution to input"
-  [day-no input]
-  (when (= day-no "1")
-    (day-1/solve input)))
+  "Applies solution to matching input"
+  [day-no]
+  (let [solver-fn (find-solver day-no)
+        input (read-input day-no)]
+    (solver-fn input)))
 
 (defn format-item
   [item]
