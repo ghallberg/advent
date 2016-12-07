@@ -7,7 +7,7 @@
 
 (defn parse-instructions
   [input]
-  (map get-parts (split input #" ")))
+  (map get-parts (split input #", ")))
 
 (defn clean-instruction [headings instruction]
   (let [turning-matrix {["N" "R"] "E",
