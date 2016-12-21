@@ -1,6 +1,5 @@
-(ns advent.day-4)
-
-(use '[clojure.string :as s])
+(ns advent.day-4
+  (:require [clojure.string :as s]))
 
 (defn split-descriptor
   [descriptor]
