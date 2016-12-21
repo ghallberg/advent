@@ -5,6 +5,7 @@
 (require '[advent.day-3 :as day-3])
 (require '[advent.day-4 :as day-4])
 (require '[advent.day-5 :as day-5])
+(require '[advent.day-6 :as day-6])
 
 
 (use '[clojure.string :only [trim]])
