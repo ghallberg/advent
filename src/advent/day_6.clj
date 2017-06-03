@@ -1,28 +1,9 @@
 (ns advent.day-6
   (:require [clojure.string :as s]))
 
-(def somes
-  "eedadn
-drvtee
-eandsr
-raavrd
-atevrs
-tsrnev
-sdttsa
-rasrtv
-nssdts
-ntnada
-svetve
-tesnvt
-vntsnd
-vrdear
-dvrsen
-enarar")
-
-
 (defn parse-input
   [input]
-  (s/split input #"\n"))
+  (s/split-lines input))
 
 (defn most-frequent
   [input]
